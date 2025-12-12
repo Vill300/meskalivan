@@ -8,11 +8,37 @@
     // Copyright (c) 2016 Craig Davis
     // Licensed under the MIT License
     // ----------------------------------------------------------------------
-    // Add any redirect rules here. To send all traffic to the index.html
-    // page, use this rule:
-    window.location.replace('/');
+    
+    // Segment.com Contents
+    // https://github.com/segmentio/segment.io/blob/master/pages/segment.com/segment.io.js
+    // ----------------------------------------------------------------------
+    
+    // Basic function to handle redirects for SPA
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+    
+    // Redirect all traffic to the SPA
+    window.location.replace(
+      'https://vill300.github.io/meskalivan/' +
+      window.location.pathname.replace(/&/g, '~and~') +
+      (window.location.search ? '&' + window.location.search.slice(1).replace(/&/g, '~and~') : '') +
+      window.location.hash
+    );
   </script>
 </head>
 <body>
+  <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif;">
+    <h1>Meskalivan</h1>
+    <p>Загрузка приложения...</p>
+    <p>Если страница не загружается, <a href="https://vill300.github.io/meskalivan/">нажмите здесь</a></p>
+  </div>
 </body>
 </html>
