@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-discord-dark text-white font-sans;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  #root {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-discord-accent hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-discord-light hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  }
+  
+  .input-field {
+    @apply bg-discord-dark border border-gray-600 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-discord-accent focus:border-transparent;
+  }
+  
+  .sidebar {
+    @apply bg-discord-darker border-r border-gray-700;
+  }
+  
+  .chat-area {
+    @apply bg-discord-dark flex-1;
+  }
+  
+  .channel-list {
+    @apply bg-discord-darker w-16 flex flex-col items-center py-4 space-y-2;
+  }
+  
+  .user-list {
+    @apply bg-discord-darker w-60 py-4 px-2;
+  }
+}
