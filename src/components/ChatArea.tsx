@@ -21,7 +21,6 @@ const ChatArea: React.FC<ChatAreaProps> = ({ channelId }) => {
   const { user } = useAuth()
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
 
   // Mock messages for demo
   useEffect(() => {

@@ -4,12 +4,10 @@ import ChannelList from './ChannelList'
 import ChatArea from './ChatArea'
 import UserList from './UserList'
 import UserPanel from './UserPanel'
-import { Hash, MessageSquare, Users, Settings, LogOut } from 'lucide-react'
 
 const DiscordLayout: React.FC = () => {
   const { user, signOut } = useAuth()
   const [selectedChannel, setSelectedChannel] = useState('general')
-  const [activeView, setActiveView] = useState<'channels' | 'users'>('channels')
 
   const handleSignOut = async () => {
     await signOut()
@@ -47,10 +45,7 @@ const DiscordLayout: React.FC = () => {
       {/* Main Content */}
       <div className="flex-1 flex">
         <ChatArea channelId={selectedChannel} />
-        
-        {activeView === 'users' && (
-          <UserList />
-        )}
+        <UserList />
       </div>
     </div>
   )

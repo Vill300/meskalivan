@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meskalivan - Discord Clone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: rgba(52, 73, 94, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #7289da;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .channel-list {
+            margin-bottom: 20px;
+        }
+        
+        .channel {
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .channel:hover {
+            background: rgba(114, 137, 218, 0.2);
+        }
+        
+        .channel.active {
+            background: #7289da;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(52, 73, 94, 0.6);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .channel-name {
+            font-weight: 600;
+            color: #7289da;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #7289da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .chat-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #7289da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        
+        .message-author {
+            font-weight: 600;
+            color: #7289da;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .message-text {
+            line-height: 1.4;
+        }
+        
+        .input-area {
+            padding: 20px;
+            background: rgba(52, 73, 94, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .message-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .send-button {
+            padding: 12px 20px;
+            background: #7289da;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .send-button:hover {
+            background: #5f6dc4;
+        }
+        
+        .user-list {
+            width: 200px;
+            background: rgba(52, 73, 94, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-list-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .user:hover {
+            background: rgba(114, 137, 218, 0.2);
+        }
+        
+        .user-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #43b581;
+        }
+        
+        .user-status.away {
+            background: #faa81a;
+        }
+        
+        .user-status.busy {
+            background: #f04747;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .user-list {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Левая панель с каналами -->
+        <div class="sidebar">
+            <div class="logo">Meskalivan</div>
+            <div class="channel-list">
+                <div class="channel active">📢 Общий</div>
+                <div class="channel">🎲 Случайный</div>
+                <div class="channel">🎮 Игры</div>
+                <div class="channel">🔧 Техническая поддержка</div>
+            </div>
+        </div>
+        
+        <!-- Основная область чата -->
+        <div class="main-content">
+            <div class="header">
+                <div class="channel-name"># общий</div>
+                <div class="user-info">
+                    <div class="user-avatar">U</div>
+                    <span>Пользователь</span>
+                </div>
+            </div>
+            
+            <div class="chat-area" id="chatArea">
+                <div class="message">
+                    <div class="message-avatar">A</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">Администратор</span>
+                            <span class="message-time">12:30</span>
+                        </div>
+                        <div class="message-text">Добро пожаловать в Meskalivan Discord Clone! 🎉</div>
+                    </div>
+                </div>
+                
+                <div class="message">
+                    <div class="message-avatar">U</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">Пользователь1</span>
+                            <span class="message-time">12:32</span>
+                        </div>
+                        <div class="message-text">Отличный клон Discord! Работает прекрасно!</div>
+                    </div>
+                </div>
+                
+                <div class="message">
+                    <div class="message-avatar">D</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">Разработчик</span>
+                            <span class="message-time">12:35</span>
+                        </div>
+                        <div class="message-text">Спасибо! Скоро добавлю еще больше функций 🚀</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <div class="input-container">
+                    <input type="text" class="message-input" placeholder="Напишите сообщение..." id="messageInput">
+                    <button class="send-button" onclick="sendMessage()">Отправить</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Правая панель с пользователями -->
+        <div class="user-list">
+            <div class="user-list-title">Онлайн — 4</div>
+            <div class="user">
+                <div class="user-status"></div>
+                <span>Администратор</span>
+            </div>
+            <div class="user">
+                <div class="user-status"></div>
+                <span>Пользователь1</span>
+            </div>
+            <div class="user">
+                <div class="user-status away"></div>
+                <span>Пользователь2</span>
+            </div>
+            <div class="user">
+                <div class="user-status"></div>
+                <span>Разработчик</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatArea = document.getElementById('chatArea');
+                const now = new Date();
+                const time = now.getHours().toString().padStart(2, '0') + ':' + 
+                           now.getMinutes().toString().padStart(2, '0');
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">U</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-author">Вы</span>
+                            <span class="message-time">${time}</span>
+                        </div>
+                        <div class="message-text">${message}</div>
+                    </div>
+                `;
+                
+                chatArea.appendChild(messageDiv);
+                chatArea.scrollTop = chatArea.scrollHeight;
+                input.value = '';
+            }
+        }
+        
+        // Отправка сообщения по Enter
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Переключение каналов
+        document.querySelectorAll('.channel').forEach(channel => {
+            channel.addEventListener('click', function() {
+                document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

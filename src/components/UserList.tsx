@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mic, MicOff, Headphones, Settings } from 'lucide-react'
+import { MicOff, Headphones } from 'lucide-react'
 
 interface OnlineUser {
   id: string
